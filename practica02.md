@@ -31,25 +31,25 @@ scp lsi@10.11.48.142:/home/lsi/my.pcap .
 
 - **Identifique los campos de cabecera de un paquete TCP**
 
-![img](./practica02.assets/Iy_RNdUMs1emXxUGcKp3Cg7WnU2IadxEDmixskZYl2HBqDkrnzAx8ZiVh-fussqFLUnj4Z4jn0t5SWvtz0gsU5vR-kVw7sgcJfWZM0918PosZzA2az169VyYRgiVd-Grr0Xkl6YVQ2IWZrx1I7Spyhw.png)
+![img](./assets/practica02/Iy_RNdUMs1emXxUGcKp3Cg7WnU2IadxEDmixskZYl2HBqDkrnzAx8ZiVh-fussqFLUnj4Z4jn0t5SWvtz0gsU5vR-kVw7sgcJfWZM0918PosZzA2az169VyYRgiVd-Grr0Xkl6YVQ2IWZrx1I7Spyhw.png)
 
 - **Filtre la captura para obtener el tráfico HTTP**
 
-![img](./practica02.assets/94IemvlSnVYNH-LFc09o5ViX23Vw9KW0M6tL_AzkSfjgddQWBGBS2duk3GJIAm1xqeXDgzuFOI-J8oG6cAaQaEXGK3cXcd_diwskn_OvmLL7x1lBm-AhmAuyKycCaL8vOzMyiauncCHFo705o6LcZcc.png)
+![img](./assets/practica02/94IemvlSnVYNH-LFc09o5ViX23Vw9KW0M6tL_AzkSfjgddQWBGBS2duk3GJIAm1xqeXDgzuFOI-J8oG6cAaQaEXGK3cXcd_diwskn_OvmLL7x1lBm-AhmAuyKycCaL8vOzMyiauncCHFo705o6LcZcc.png)
 
 - **Obtenga los distintos “objetos” del tráfico HTTP (imágenes, pdfs, etc.)**
 
-![img](./practica02.assets/n2gOh_fxEu6lRbeTM5dOcX25A0I2ZJeMDdJl4ObSZftT5zIpo4q5R1_veHRZYblDdh5txArg-n4Bjk6Xq3TR7QyUM00qIcfLXDSPl-4nP3BveIt8HXOpr80z_Uxnbdd9kN8sK_h3ALmGYSRxrJ1xXXw.png)
+![img](./assets/practica02/n2gOh_fxEu6lRbeTM5dOcX25A0I2ZJeMDdJl4ObSZftT5zIpo4q5R1_veHRZYblDdh5txArg-n4Bjk6Xq3TR7QyUM00qIcfLXDSPl-4nP3BveIt8HXOpr80z_Uxnbdd9kN8sK_h3ALmGYSRxrJ1xXXw.png)
 
-![img](./practica02.assets/Q66xPFjbn-d7YAtb87Fq0blFRYfxIwgbW1TLLH_4tO4Cv-XZk9v5SAne4ITNQS2ZTSXzN2C0hpHhRTAW2XKAbCCiS30wypihdClrv3NIBCgqVFWeeaTZJ06h5Fo6suEKV-txC-ZG_1iyFghLG6KQZB0.png)
+![img](./assets/practica02/Q66xPFjbn-d7YAtb87Fq0blFRYfxIwgbW1TLLH_4tO4Cv-XZk9v5SAne4ITNQS2ZTSXzN2C0hpHhRTAW2XKAbCCiS30wypihdClrv3NIBCgqVFWeeaTZJ06h5Fo6suEKV-txC-ZG_1iyFghLG6KQZB0.png)
 
 La página original
 
-![img](./practica02.assets/Ugu-3CPm0Ov2xq6T3p4YfAXbfwkwW6gvU2audkSVm7uLgz4h69cJNY7RZOMcc9064wWMUzoF1LZ3O1Dy75EHbNiEsmQk_oxw_G1P54Vhv_ayI75CSWrBPvdfu4pAvB9FV_yRXhMX7OggAHnDCvVtvEI.png)
+![img](./assets/practica02/Ugu-3CPm0Ov2xq6T3p4YfAXbfwkwW6gvU2audkSVm7uLgz4h69cJNY7RZOMcc9064wWMUzoF1LZ3O1Dy75EHbNiEsmQk_oxw_G1P54Vhv_ayI75CSWrBPvdfu4pAvB9FV_yRXhMX7OggAHnDCvVtvEI.png)
 
 - **Visualice la paquetería TCP de una determinada sesión.**
 
-![img](./practica02.assets/tHTlEYjYa3fjBpJa--jYlwFg0fXKjTyed2DArv_sAPXr-rj_TMRqN_CU4rOxVt-vLjHytQ5KwqNwNsMdAE3RxKSSBD8UkgrROICdTihVQ7I6el5qkOpRya5i0ZnNwBPS0tuGMVvbon3AjsjEOlncONc.png)
+![img](./assets/practica02/tHTlEYjYa3fjBpJa--jYlwFg0fXKjTyed2DArv_sAPXr-rj_TMRqN_CU4rOxVt-vLjHytQ5KwqNwNsMdAE3RxKSSBD8UkgrROICdTihVQ7I6el5qkOpRya5i0ZnNwBPS0tuGMVvbon3AjsjEOlncONc.png)
 
 - **Sobre el total de la paquetería obtenga estadísticas del tráfico por protocolo como fuente de información para un análisis básico del tráfico.**
 
@@ -59,11 +59,11 @@ Creo que en pestaña de estadísticas
 
 Este sí que es en la pestaña de Estadísticas
 
-![img](./practica02.assets/JNb9IA13laz3eDHlYJSMRwQ4n7g1Z1oI3rWtRU-Z503jQzelOobRPnjMi_g0zu3p1tzo9VeQxiTih3AdOAxqv6sU8DTgCY2THfyoX8-zwotGpiQNBV3zt7ozMA5okcj-r37M1j8EECsMnPiZXUeVpNg.png)
+![img](./assets/practica02/JNb9IA13laz3eDHlYJSMRwQ4n7g1Z1oI3rWtRU-Z503jQzelOobRPnjMi_g0zu3p1tzo9VeQxiTih3AdOAxqv6sU8DTgCY2THfyoX8-zwotGpiQNBV3zt7ozMA5okcj-r37M1j8EECsMnPiZXUeVpNg.png)
 
 - **Obtenga direcciones finales del tráfico de los distintos protocolos como mecanismo para determinar qué circula por nuestras redes. **
 
-![img](./practica02.assets/nEDXVyIY7EABpIhwI6_kxLFH3aMbWsnispwCq6NTJYf2b7rK05fTJqZhZ1-Xv-QvATw3dta9Fu6TY1qKqoQJ-zuTbpsPe94IeaMUxgU7crC9Y3RjdKlUMX3ev8nABy8FrmTPkaOXi7L_3lOWvCY6nXs.png)
+![img](./assets/practica02/nEDXVyIY7EABpIhwI6_kxLFH3aMbWsnispwCq6NTJYf2b7rK05fTJqZhZ1-Xv-QvATw3dta9Fu6TY1qKqoQJ-zuTbpsPe94IeaMUxgU7crC9Y3RjdKlUMX3ev8nABy8FrmTPkaOXi7L_3lOWvCY6nXs.png)
 
 **c) Obtenga la relación de las direcciones MAC de los equipos de su segmento**. [Mostrar las MAC]
 

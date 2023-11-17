@@ -901,7 +901,7 @@ dpkg -i splunk
 
 Splunk se arranca con ```/opt/splunk/bin/splunk start```
 
-![img](./practica01.assets/lBxwKHeMj_3JUex2RBapOp2C4WQ12P2PbvdKJUTEXEgxBY2m59vEw9GgyM8MnQrDvdZwldxsrJkARMKUzGh3odURfrX8bNqTq-gYRZ_wWESsqu_yGNXB0iks3q92VxKyQcfAsjiuXJG-kzCzjb_IeiA.png)Se entra desde el navegador
+![img](./assets/practica01/Sw-zoZAevXcqZ12xscTCpTSoSMg7OqeqUE2Ds_Wa7PBouqvZ0cncznEy4WirGKTRirluy1loDYPFDsMgwVCHMMPbwz-Zm7a5EOwD2IPYkNB7CfYHATdfDZGWfC8pfyzYmIhebd5TFipYvvv0zlO_nuo.png)
 
 ​	**a. Genere una query que visualice los logs internos del splunk**
 
@@ -923,16 +923,16 @@ La consulta de los registros internos, por terminal se hace de la siguiente mane
 ```
 
 Y por el navegador:
-![img](./practica01.assets/aYl4vCWqGsxczZomyXoXChAWDtzm_7zSyMNLktUYHpoI8Chwmc4C2D3eWU0sDVSxxzZuEXNQIdDOdxS_IS16mh-WUxJr0bxgKanISTito2M7gZ1T9pleiaG8-e307ZqdKM6uYHHw7A5_zg_RzD-f1P8.png)
+![img](./assets/practica01/xSEsxeAoaEuGuRqZ3ZaGsN3Sr7GNlw5FerrcnzdIhIT1OlvYqXPmwjXFbM8Ge7aZnkNGZ-OeJwH-3f4j3XxcfvDTYbN-jiLFGVRJL2DO0ow2R-sSawo8fje28vayoV-PjQHozB21v7EEMnG08AsUsK4.png)
 
 ​	**b. Cargué el fichero /var/log/apache2/access.log y el journald del sistema y visualícelos.**
 
 Vamos al panel de control (el primero que aparece al abrir Splunk en el navegador) y vamos a “Add Data”
 
-![img](./practica01.assets/y-m1DOrtlSr0iYe8EkzvvSiJeDzzvU4S2SIuc0wkoRu6vy7aVuvz0exPZjImf7YoAMxZ1BpdGCrx2LIFU8Xr1K21vX3YVKh-IPVs_C6JHvIgpNsLxJwnB5FTzto2enwuVDGhX-lJtg0dOxzdJ8pS47M.png)
+![img](./assets/practica01/vfpLhJVfVRIKct88gMbIEKuASwXQmOuUZFL4fpfig8cqOHGDeVXKaW50yyQE-nq6BlnHvQpuj7TlfxiTiDMd2loZYXL8j1r6Q4UdyFBGtDk07MNdDpKwMDJ05n1HG-8pDCbFl03J9FLcozjDlL3ajg8.png)
 
 Luego abajo en Upload
-![img](./practica01.assets/mxPC3-5XjZAZoVEEKarppoOdGjKMV49tMs34eT1oQMnqAf-KyR91s6Wf0y21SBv0eYplfsemSSf7CTTAVkH7J6ITeGKf24Zu1gEuWaF8CQeXbLIz39tMGyQgb2800PaxPl5riJWD2zY-pZhuJtoPaf4.png)
+![img](./assets/practica01/ZgDg8DKLeVHE4E7bL35dtqWpeW_Fivo_N2umYpZoNuVlzGmLT2_WpQzWS-QLEIrdIKSB3K9KQSkmbkpxdh5BObyCfG22ec3GtMpdsPbhKFZd-TMZ4esS4F1xHdUIVKOVs08C5A03mXpxkicxW0vxmPk.png)
 
 Por comando sería:
 
@@ -962,7 +962,7 @@ Oneshot '/home/lsi/journald.log' added
 
 Para consultar se puede hacer por GUI
 
-![img](./practica01.assets/w8xe4huclgDla30d3MUuuxT5o5YP-8A6T6VxWAKchQ4ZY-quu7Cv6zWDz67lqzPDxkhZ2zqJn1pAMvQyux8m8FT7drp5YVnIyWlC7-aZeAzKs7eVoVVnqItcbz_9kWi04-03b3A2p2DJc8MUdirVQzA.png)
+![img](./assets/practica01/vAJ7cewBhWZTEVmlV0sf-eqk4yJ1Cz5GAceoyWDUWblT_YDKMvXRL7pFQbb5XxFpugJnvhYrXn2k_VLPFBEKbrRgZ8o5yXHA8mi6fE2CJdwNWBjwmvXhGNV_1ydRn97RGONRumfmldCa-AHHKncbVlc.png)
 
 O por CLI
 
@@ -1002,7 +1002,7 @@ sourcetype=apache_access IP=*
 | stats count by IP
 ```
 
-![img](./practica01.assets/sbZNw1kOUMf2siqPywr_coZg3eCvEkBFn8wVTJ9xExAs0CoirEFrAVpSWvrOM5nAZptLS9hIvqOjZ5m3SaUSSUBI1V1sAtXkmyCqjs4_WU1l79LR8D9q9bqYztGr-WJB2Jb6pcRSxyLfcVRlEdDpSSw.png)
+![img](./assets/practica01/OgC3gJdXNOPYBZ-GV3v2AexlFG-B76g0Ui50qZNMPDziazzLfsurj-T_Q_cKlh1CSJS3SIbUh1Z61JLSxwMOlB76rIabkBKfyuiAkA9k8KjPOWVVJH90Xe7BhYk7AcLY1sbHTNZcLNbYD1YvrtsBsgE.png)
 
 En este caso la 10.30.9.22, es la que me asignó el servicio de DHCP al conectarme a la VPN
 
@@ -1010,15 +1010,15 @@ En este caso la 10.30.9.22, es la que me asignó el servicio de DHCP al conectar
 
 Buscamos el log de Apache2 y le damos a “Extract New Field”
 
-![img](./practica01.assets/eDO8_Zw9hemR-jXOu0UqUKePBvd5ajtVdGdnNcWhrio5Lsy5B4m7UcUX3gzlV3sIEqpg9vfIUHDdfsNhHdlNAoQgS4UqU7he4pROgqHVKEgWjt6ckEk_07U90QvN1PbfvIpMfTf2__vq2gLW6dbB66E.png)
+![img](./assets/practica01/vUl0FP1BgKKPqh7UIopnE52ANriUpt1bXn6zvIbQkcJ24HYX_lgRKm5545X4hF2hO_MhQEPFGwFrSe_HeCxGzkcGpK7Ur3IuPdz8aboljDi_K9DAMVv8b1hGyS27WsXv8UX1F5wFlWyYSGavSUH6eiA.png)
 
 Seleccionamos un log y le damos a Next
 
-![img](./practica01.assets/LF-KwmQqs1MN1e6R1EDUolbqvplSBeR8NFI9_z8j8g3B6bjjpAGqnR9Ew5lSQZ7fraNdfa-OZztyQuI7vdfI_pLfNb_xhdeOtZjSauZaeBkmUKPR1H4ri6oSZ-r_iGJLXJnQ9D3DL68ZKhgj3g-t_kY.png)
+![img](./assets/practica01/lcg_EBbDhcSZQcRPNDDqiIKM8eDrsEutxyDOB0S3kg2UNpCS4740T7USAZpPMQYXM3viwchBSH_bILEtM16iAq7OSglrAtOzv1W66e16yeM0ayznHqV3Hz7mvCI6VdoSJoIfwaFSvmWGwPjFFdFNwlQ.png)
 
 Seleccionamos la expresión regular y después subrayamos la expresión de la que queremos hacer expresión, o la hacemos nosotros mismo, en este caso es el de la IP. Cuando se haga esto, a este nuevo Field, le llamaremos IP
 
-![img](./practica01.assets/darPlawb0Dagj03Qf8H3oVFdLnq9kKoSffzy9u5pkZVjAMDsFyCjE-xXs7aRFOS3FC6baxE3jymGaD4sHm7TnE6yOjj_sklSWfxhwY77m6cL_jsDceZSh8B7yMw0tCVd9_KUjsfkuXJkWEvan0lPplY.png)
+![img](./assets/practica01/3p59XEr16JopIsn8VanGj1tRAT-xkejOttOIbK2PK0uaFyiCQPoZQUVYI7vPt78ivRhF-1vEGFHP38UaoKbEFt2M-cau5KpeiYBm9VPXlZnEnpE4ne8KqHYMX2zz3du-x1qVYs2ZSpNyhFG2iq4T9OQ.png)
 
 Una vez creado el nuevo Field hacemos la siguiente búsqueda:
 
@@ -1033,7 +1033,7 @@ sourcetype=apache_access IP=*
 
 Y debería mostrar lo siguiente, un mapa con la procedencia de IP, antes de hacer esto en access.log edité las IP para que fueran públicas y no privadas:
 
-![img](./practica01.assets/TDOYvJdyDWZDWLY9X-tuVDT0OILSGLlmC40WuaNOHCBoOswV4iqf8nbjRUR8dAUkWQnHkCDXR-9kHuFWESoD2je6wzV2XtRyOTDqDoWmYJXgDT-JaPyf23HGYLUNWLzdOjcvdS6q2oKUA30uncAH1Oc.png)
+![img](./assets/practica01/iSofayBSEZTE_eNNecZc-5BSeUWLXifRGZolXeoFKJkH5VhOD-L95bbtUIVwrF-WhFYxJQwRA_8rWLcayOCmrqQ1TEMoXLYDP7husQVXBI19rXt2oZ6ZNo7ET84lmvrkp83-4DxhzTNbBXnK1B6rO5w.png)
 
 ​	**e. Obtenga los hosts origen, sources y sourcestypes.**
 
@@ -1059,7 +1059,7 @@ Si creamos un archivo inputs.conf en ```/opt/splunk/etc/system/local/inputs.conf
 
 Splunk monitorizará en tiempo real los archivos que le indiquemos, en este caso acces.log, inicios.log y sshLogingAttempt.log
 
-![img](./practica01.assets/_329UmRQUbJGLLOXm4AXjgsRftg8e32FPLabNBJjZquTTOce3TrZh-JUoZyF7x09tqDN56cnPDY5UNXlU0OiCn0BMHDBIzFqxRv_J7b9QLDcZZhN2hS01AU4Qa64Id-L2ypohS6h7F3ShOVZHvjWArM.png)
+![img](./assets/practica01/mry4kXrtMVpDHX60a_MKsNsVsh4KBOoImVUHe7gCojXbvvyh7kCw5ghWIehmbwtGyRhEUhWdkrPqpj-sMC_Za03_0McrwQY-ehWlx06x5WeQEi-0KqjHzYSvvR-y0_fVJvEbgd8GX7YReYFJwvrd-Gw.png)
 
 \-----
 
