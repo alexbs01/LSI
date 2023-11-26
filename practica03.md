@@ -57,39 +57,83 @@
 
      - **Configure una Autoridad Certificadora en su equipo.**[Pasar de HTTP a HTTPS, uno va a ser la entidad certificadora, usar easy-rsa, crear dos ficheros uno público y otro privado. El otro va a ser el servidor y generar fichero público y privado. En el servidor se utiliza su clave pública, también la publica combinada con la privada de la entidad, y luego la pública del servidor. ]
 
+       EN LA ENTIDAD CERTIFICADORA
+
        Actualizamos los repositorios e instalamos openssl
-
-       ```sh
-       apt uptdate -y && apt install -y openssl
-       ```
-
-       Luego descargamos y descomprimimos easy-rsa 
-
-       ```sh
-       wget https://github.com/OpenVPN/easy-rsa/archive/refs/tags/v3.1.7.tar.gz
-       tar xzvf v3.1.7.tar.gz
-       cd easyrsa3/
-       ```
-
-       Luego copiamos vars.examples en otro archivo y lo configuramos
-
-       ```sh
-       cp vars.example vars
        
-       echo 'set_var EASYRSA_ALGO "ec"' >> vars
-       echo 'set_var EASYRSA_DIGEST "sha512"' >> vars
-       ```
-
-       Luego editamos:
-
        ```sh
-       nano x509-types/server
-       extendedKeyUsage = serverAuth,clientAuth
+       apt update -y && apt install -y openssl easy-rsa
        ```
 
+       Vamos a /home/lsi y creamos una carpeta para tener todo lo de easy-rsa
        
+       ```sh
+       cd /home/lsi/
+       make-cadir easyrsa
+       cd easyrsa
+       ```
 
-     
+       Creamos un PKI y la Entidad Certificadora, cuando pregunte el FQDN ponemos la IP de la Entidad Certificadora
+       
+       ```sh
+       ./easyrsa init-pki
+       ./easyrsa build-ca nopass
+       ```
+
+       EN EL SERVIDOR WEB
+
+       Vamos a la carpeta de configuración de apache y creamos la carpeta de easy-rsa
+       
+       ```sh
+       cd /etc/apache2
+       make-cadir easyrsa
+       cd easyrsa
+       ```
+       
+       Luego creamos un PKI y generamos una petición de firma a la Entidad Certificadora, poniendo el nombre de la entidad. Y copiamos la petición generada en  la carpeta /tmp de la entidad
+       
+       ```sh
+       ./easyrsa init-pki
+       ./easyrsa gen-req 10.11.50.143
+       scp pki/reqs/10.11.50.143.req lsi@10.11.50.143:/tmp
+       ```
+       
+       EN LA ENTIDAD CERTIFICADORA
+       
+       Importamos la petición, la firmamos y la llevamos la carpeta /tmp del servidor web
+       
+       ```sh
+       ./easyrsa import-req /tmp/10.11.50.143.req 10.11.50.143
+       ./easyrsa sign-req server 10.11.50.143
+       scp pki/issued/10.11.50.143.crt lsi@10.11.50.142:/tmp
+       ```
+       
+       EN EL SERVIDOR WEB
+       
+       Copiamos el certificado firmado en pki/private
+       
+       ```sh
+       cp /tmp/10.11.50.143.crt pki/private/
+       ```
+       
+       Después, habilitamos el módulo de ssl, editamos el archivo sites-available/default-ssl.conf y cambiamos las siguientes líneas
+       
+       ```sh
+       a2enmod ssl
+       nano sites-available/default-ssl.conf
+       
+       SSLCertificateFile      /etc/apache2/easyrsa/pki/private/10.11.50.143.crt
+       SSLCertificateKeyFile   /etc/apache2/easyrsa/pki/private/10.11.50.143.key
+       ```
+       
+       Y reiniciamos el servidor apache poniendo la contraseña que pusimos durante la creación de las claves del servidor
+       
+       ```sh
+       root@debian:/etc/apache2# systemctl restart apache2
+       🔐 Enter passphrase for SSL/TLS keys for 127.0.0.1:443 (RSA): ****
+       ```
+       
+       
 
      - **Cree su propio certificado para ser firmado por la Autoridad Certificadora. Bueno, y fírmelo.**
      - **Configure su Apache para que únicamente proporcione acceso a un determinado directorio del árbol web bajo la condición del uso de SSL. Considere que si su la clave privada está cifrada en el proceso de arranque su máquina le solicitará la correspondiente frase de paso, pudiendo dejarla inalcanzable para su sesión ssh de trabajo.**[Crear una carpeta en el raíz de la página web una carpeta securizada, que solo funcione con HTTPS]
