@@ -136,7 +136,43 @@
        
 
      - **Cree su propio certificado para ser firmado por la Autoridad Certificadora. Bueno, y fírmelo.**
+
+       Todo en el apartado de arriba
+
      - **Configure su Apache para que únicamente proporcione acceso a un determinado directorio del árbol web bajo la condición del uso de SSL. Considere que si su la clave privada está cifrada en el proceso de arranque su máquina le solicitará la correspondiente frase de paso, pudiendo dejarla inalcanzable para su sesión ssh de trabajo.**[Crear una carpeta en el raíz de la página web una carpeta securizada, que solo funcione con HTTPS]
+
+       Creamos una carpeta en el servidor Apache
+
+       ```sh
+       mdkir /var/www/html/privada
+       ```
+
+       Luego editamos el fichero de configuración para las conexiones HTTP para bloquear el acceso a todo lo que cuelgue de la carpeta privada
+
+       ```sh
+       nano /etc/apache2/sites-available/000-default.conf
+       
+       <VirtualHost *:80>
+               ServerAdmin webmaster@localhost
+               DocumentRoot /var/www/html
+       
+               ErrorLog ${APACHE_LOG_DIR}/error.log
+               CustomLog ${APACHE_LOG_DIR}/access.log combined
+       
+       		# Añadimos esta etiqueta
+               <LocationMatch "^/privada">
+                       Require all denied
+               </LocationMatch>
+       </VirtualHost>
+       ```
+
+       Y reiniciamos Apache
+
+       ```sh
+       systemctl reload apache2
+       ```
+
+       
 
 3. **Tomando como base de trabajo el openVPN deberá configurar una VPN entre dos equipos virtuales del laboratorio que garanticen la confidencialidad entre sus comunicaciones.**[Crear una VPN, uno hace servidor y cuando el cliente se conecte le asigna una IP de un rango establecido, la conexión debe ir cifrada, clave compartida(pre-shared key). En el cliente se conecta y ambas máquinas hacen ifconfig y luego se hace ping de ambas máquinas]
 
@@ -144,9 +180,15 @@
 
 5. **EN LA PRÁCTICA 1 se instalaron servidores y clientes de log. Configure un esquema que permita cifrar las comunicaciones.**
 
-6. **En este punto, cada máquina virtual será servidor y cliente de diversos servicios (NTP, syslog, ssh, web, etc.). Configure un “firewall stateful” de máquina adecuado a la situación actual de su máquina.**
+6. **En este punto, cada máquina virtual será servidor y cliente de diversos servicios (NTP, syslog, ssh, web, etc.). Configure un “firewall stateful” de máquina adecuado a la situación actual de su máquina.**[Crear un script que borre las reglas, poner todo restrictivo, ponemos las reglas, luego un temporizador de 1 minuto o dos, restablecer las políticas por defecto (las permisivas), y se borran las reglas. Todas las salidas mías (new) permitirlas, y todas las respuestas que me hacen (established) también]
 
-7. **Ejecute la utilidad de auditoría de seguridad *lynis* en su sistema y trate de identificar las acciones de securización detectadas así como los consejos sobre las que se deberían contemplar.**
+     Kike
+
+7. **Ejecute la utilidad de auditoría de seguridad *lynis* en su sistema y trate de identificar las acciones de securización detectadas así como los consejos sobre las que se deberían contemplar.**[Ejecutar el análisis más completo de Lynis, leer el archivo de retorno y explicar cómo se soluciona lo que nos diga]
+
+     
+
+     
 
 8. **EN LA PRÁCTICA 2 se obtuvo un perfil de los principales sistemas que conviven en su red, puertos accesibles, fingerprinting, paquetería de red, etc. Seleccione un subconjunto de máquinas del laboratorio de prácticas y la propia red. Elabore el correspondiente informe de análisis de vulnerabilidades. Puede utilizar como apoyo al análisis la herramienta Nessus Essentials (disponible para educación en https://www.tenable.com/tenable-for-education/nessus-essentials bajo registro para obtener un código de activación) para su instalación en la máquina debian de prácticas. Como opción alternativa, también podría instalar Greenbone Vulnerability Management (GVM). Como referencia-plantilla puede utilizar.:**
 

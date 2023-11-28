@@ -616,7 +616,7 @@ default via 10.11.48.1 dev ens33 onlink
 - **display-manager.service**: Servicio que gestiona el inicio de sesión en entornos gráficos
 - **exim4.service, exim4-base.service**: Servidor de correo. Enmascardo
 
-**i) Diseñe y configure un pequeño “script” y defina la correspondiente unidad de tipo service para que se ejecute en el proceso de botado de su máquina.**
+**i) Diseñe y configure un pequeño "script" y defina la correspondiente unidad de tipo service para que se ejecute en el proceso de botado de su máquina.**
 
 Creamos un archivo en ```/etc/systemd/system/echoBuenosDias.service```, en este escribimos información del mismo, que script ejecutará y a qué target lo asociamos.
 ```sh
@@ -679,7 +679,7 @@ udp        0      0 127.0.0.1:323           0.0.0.0:*                           
 udp6       0      0 ::1:323                 :::*                                0          15376
 ```
 
-**k) Nuestro sistema es el encargado de gestionar la CPU, memoria, red, etc., como soporte a los datos y procesos. Monitorice en “tiempo real” la información relevante de los procesos del sistema y los recursos consumidos. Monitorice en “tiempo real” las conexiones de su sistema.**
+**k) Nuestro sistema es el encargado de gestionar la CPU, memoria, red, etc., como soporte a los datos y procesos. Monitorice en "tiempo real" la información relevante de los procesos del sistema y los recursos consumidos. Monitorice en "tiempo real" las conexiones de su sistema.**
 
 El administrador de tareas se puede ver con el comando ```top``` y después se ejecuta el script de fibonacci con el parámetro 150000.
 ```sh
@@ -876,9 +876,9 @@ $template remote,"/var/log/rsyslogServ/%FROMHOST-IP%/%PROGRAMNAME%.log"
 
 Si todo va correcto, se deberían poder enviar mensajes con ```logger``` y deberían de llegar en orden aunque se desconecte el servidor
 ```sh
-logger “Mensaje 1”
-logger “Mensaje 2”
-logger “Mensaje 3”
+logger "Mensaje 1"
+logger "Mensaje 2"
+logger "Mensaje 3"
 ```
 
 Para desconectar el servidor hay que parar con ```systemctl```, rsyslog, syslog y syslog.socket
@@ -887,17 +887,15 @@ Para desconectar el servidor hay que parar con ```systemctl```, rsyslog, syslog 
 
 Para subir slunk del local al remoto por SSH se usa ```scp```
 
-\```sh
-
+```sh
 scp splunk lsi@10.11.48.142:/home/lsi
 
-\# Para instalar hacer
-
+# Para instalar hacer
 apt install curl -y # Las máquinas no vienen con curl
-
 dpkg -i splunk
+```
 
-\```
+
 
 Splunk se arranca con ```/opt/splunk/bin/splunk start```
 
@@ -907,7 +905,7 @@ Splunk se arranca con ```/opt/splunk/bin/splunk start```
 
 Al intentar hacer una consulta por terminal o navegador sale este error:
 
-\> Search not executed: The minimum free disk space (5000MB) reached for /opt/splunk/var/run/splunk/dispatch. user=root., concurrency_category="historical", concurrency_context="user_instance-wide", current_concurrency=0, concurrency_limit=5000
+> Search not executed: The minimum free disk space (5000MB) reached for /opt/splunk/var/run/splunk/dispatch. user=root., concurrency_category="historical", concurrency_context="user_instance-wide", current_concurrency=0, concurrency_limit=5000
 
 Se soluciona editando **/opt/splunk/etc/system/local/server.conf** y añadiendo al final:
 
