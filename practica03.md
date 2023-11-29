@@ -198,7 +198,7 @@
 
 7. **Ejecute la utilidad de auditoría de seguridad *lynis* en su sistema y trate de identificar las acciones de securización detectadas así como los consejos sobre las que se deberían contemplar.**[Ejecutar el análisis más completo de Lynis, leer el archivo de retorno y explicar cómo se soluciona lo que nos diga]
 
-       Instalamos **lynis**, creamos una carpeta y ejecutamos un reporte
+   Instalamos **lynis**, creamos una carpeta y ejecutamos un reporte
 
      ```sh
      apt update -y && apt install -y lynis
@@ -325,18 +325,52 @@
    - **Consider hardening SSH configuration [SSH-7408]**
      - **https://cisofy.com/lynis/controls/SSH-7408/**
        - **Details  : AllowTcpForwarding (set YES to NO)**
+       
+         Permite o no, a los usuarios reenviar puertos TCP a través de SSH, lo más seguro sería establecerlo a NO. Se cambia en /etc/ssh/sshd_config.
+       
        - **Details  : ClientAliveCountMax (set 3 to 2)**
+       
+         Cambia el número de paquetes keepalive de 3 a 2, hace que las conexiones inactivas se desconecten antes.
+       
        - **Details  : Compression (set YES to NO)**
+       
+         Comprime la conexión, pero la hace menos segura. Estableciéndola a NO en /etc/ssh/sshd_config se soluciona el problema
+       
        - **Details  : LogLevel (set INFO to VERBOSE)**
+       
+         En VERBOSE muestra toda la información de SSH, también se configura en /etc/ssh/sshd_config
+       
        - **Details  : MaxAuthTries (set 6 to 3)**
+       
+         Cambia el número máximo de intentos para una conexión de 6 a 3
+       
        - **Details  : MaxSessions (set 10 to 2)**
+       
+         Determina el número máximo de conexiones simultáneas
+       
        - **Details  : Port (set 22 to )**
+       
+         Habría que cambiar el puerto por el que el servidor de SSH escucha las conexiones, para que no sea tan obvio que en ese puerto está el SSH
+       
        - **Details  : TCPKeepAlive (set YES to NO)**
+       
+         Estos paquetes los manda el servidor al cliente cada cierto tiempo para comprobar si una sesión sigue activa. Establecerlo en NO, ayuda a que las conexiones inactivas se cierren rápidamente
+       
        - **Details  : AllowAgentForwarding (set YES to NO)**
+       
+         Esta opción deshabilita el reenvío del agente SSH, lo que hace que no se pueda acceder a la clave privada
+       
+         
+     
    - **Enable logging to an external logging host for archiving purposes and additional protection [LOGG-2154]**
      - **https://cisofy.com/lynis/controls/LOGG-2154/**
+     
+       Recomiendo guardar los logs en un sitio remoto
+     
    - **Check ntpq peers output for time source candidates [TIME-3128]**
      - **https://cisofy.com/lynis/controls/TIME-3128/**
+     
+       Lynis comprueba si los servidores de NTP están en la descripción general por pares. Las diferencias entre la configuración activa y la almacenada en el disco pueden provocar que la configuración NTP no funcione después de un reinicio.
    
    ​    
    
