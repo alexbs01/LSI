@@ -61,7 +61,33 @@
        w3m http://localhost:8080
        ```
 
-     - **"Exporte" un directorio y “móntelo” de forma remota sobre un túnel SSH.**[Crear una carpeta compartida]
+     - **"Exporte" un directorio y "móntelo" de forma remota sobre un túnel SSH.**[Crear una carpeta compartida]
+
+       Actualizamos las máquinas e instalamos sshfs
+
+       ```sh
+       apt update -y && apt install -y sshfs
+       ```
+
+       EN EL SERVIDOR, 10.11.48.142
+
+       Creamos una carpeta shareDirectory y un archivo dentro
+
+       ```sh
+       mkdir shareDirectory
+       touch test
+       ```
+
+       EN EL CLIENTE, 10.11.48.143
+
+       Creamos una carpeta (puede ser con otro nombre) y creamos el punto de montaje
+
+       ```sh
+       mkdir shareDirectory
+       sshfs -o allow_other,IdentityFile=~/.ssh/id_rsa lsi@10.11.50.142:/home/lsi/shareDirectory/ shareDirectory/
+       ```
+
+       
 
      - **PARA PLANTEAR DE FORMA TEÓRICA.: Securice su sevidor considerando que únicamente dará servicio ssh para sesiones de usuario desde determinadas IPs.**
 
