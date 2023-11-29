@@ -49,7 +49,19 @@
 
      - **Mediante túneles SSH securice algún servicio no seguro.** [Securizar un servicio con un tunel ssh (puede ser apache) hay que esnifar el tráfico y abrir el paquete con Wireshark para que solo se vea SSH]
 
-     - **“Exporte” un directorio y “móntelo” de forma remota sobre un túnel SSH.**[Crear una carpeta compartida]
+       Creamos un túnel con SSH, del puerto 8080 del cliente al 80 de mi servidor web
+
+       ```sh
+       ssh -L 8080:10.11.48.142:80 -N lsi@10.11.50.142
+       ```
+
+       Ahora el cliente puede acceder a la web desde su puerto 8080
+
+       ```sh
+       w3m http://localhost:8080
+       ```
+
+     - **"Exporte" un directorio y “móntelo” de forma remota sobre un túnel SSH.**[Crear una carpeta compartida]
 
      - **PARA PLANTEAR DE FORMA TEÓRICA.: Securice su sevidor considerando que únicamente dará servicio ssh para sesiones de usuario desde determinadas IPs.**
 
@@ -180,16 +192,154 @@
 
 5. **EN LA PRÁCTICA 1 se instalaron servidores y clientes de log. Configure un esquema que permita cifrar las comunicaciones.**
 
-6. **En este punto, cada máquina virtual será servidor y cliente de diversos servicios (NTP, syslog, ssh, web, etc.). Configure un “firewall stateful” de máquina adecuado a la situación actual de su máquina.**[Crear un script que borre las reglas, poner todo restrictivo, ponemos las reglas, luego un temporizador de 1 minuto o dos, restablecer las políticas por defecto (las permisivas), y se borran las reglas. Todas las salidas mías (new) permitirlas, y todas las respuestas que me hacen (established) también]
+6. **En este punto, cada máquina virtual será servidor y cliente de diversos servicios (NTP, syslog, ssh, web, etc.). Configure un "firewall stateful" de máquina adecuado a la situación actual de su máquina.**[Crear un script que borre las reglas, poner todo restrictivo, ponemos las reglas, luego un temporizador de 1 minuto o dos, restablecer las políticas por defecto (las permisivas), y se borran las reglas. Todas las salidas mías (new) permitirlas, y todas las respuestas que me hacen (established) también]
 
      Kike
 
 7. **Ejecute la utilidad de auditoría de seguridad *lynis* en su sistema y trate de identificar las acciones de securización detectadas así como los consejos sobre las que se deberían contemplar.**[Ejecutar el análisis más completo de Lynis, leer el archivo de retorno y explicar cómo se soluciona lo que nos diga]
 
-     
+       Instalamos **lynis**, creamos una carpeta y ejecutamos un reporte
 
+     ```sh
+     apt update -y && apt install -y lynis
+     mkdir /home/lsi/lynis
+     cd /home/lsi/lynis
      
+     lynis audit system --verbose > lynis.txt
+     ```
 
+     Leemos el fichero con ```cat```, y buscamos los servicios que nos interesan
+
+     Para SSH obtenemos esta salida:
+     ```sh
+     [+] Soporte SSH
+     ------------------------------------
+       - Checking running SSH daemon                               [ ENCONTRADO ]
+         - Searching SSH configuration                             [ ENCONTRADO ]
+         - OpenSSH option: AllowTcpForwarding                      [ SUGERENCIA ]
+         - OpenSSH option: ClientAliveCountMax                     [ SUGERENCIA ]
+         - OpenSSH option: ClientAliveInterval                     [ OK ]
+         - OpenSSH option: Compression                             [ SUGERENCIA ]
+         - OpenSSH option: FingerprintHash                         [ OK ]
+         - OpenSSH option: GatewayPorts                            [ OK ]
+         - OpenSSH option: IgnoreRhosts                            [ OK ]
+         - OpenSSH option: LoginGraceTime                          [ OK ]
+         - OpenSSH option: LogLevel                                [ SUGERENCIA ]
+         - OpenSSH option: MaxAuthTries                            [ SUGERENCIA ]
+         - OpenSSH option: MaxSessions                             [ SUGERENCIA ]
+         - OpenSSH option: PermitRootLogin                         [ OK ]
+         - OpenSSH option: PermitUserEnvironment                   [ OK ]
+         - OpenSSH option: PermitTunnel                            [ OK ]
+         - OpenSSH option: Port                                    [ SUGERENCIA ]
+         - OpenSSH option: PrintLastLog                            [ OK ]
+         - OpenSSH option: StrictModes                             [ OK ]
+         - OpenSSH option: TCPKeepAlive                            [ SUGERENCIA ]
+         - OpenSSH option: UseDNS                                  [ OK ]
+         - OpenSSH option: X11Forwarding                           [ SUGERENCIA ]
+         - OpenSSH option: AllowAgentForwarding                    [ SUGERENCIA ]
+         - OpenSSH option: AllowUsers                              [ NO ENCONTRADO ]
+         - OpenSSH option: AllowGroups                             [ NO ENCONTRADO ]
+     ```
+
+     Para NTP:
+
+     ```sh
+     [+] Tiempo y sincronización
+     ------------------------------------
+       - NTP daemon found: ntpd                                    [ ENCONTRADO ]
+       - Checking for a running NTP daemon or client               [ OK ]
+       - Checking valid association ID's                           [ ENCONTRADO ]
+       - Checking high stratum ntp peers                           [ OK ]
+       - Checking unreliable ntp peers                             [ NINGUNO ]
+       - Checking selected time source                             [ OK ]
+       - Checking time source candidates                           [ NINGUNO ]
+       - Checking falsetickers                                     [ OK ]
+       - Checking NTP version                                      [ ENCONTRADO ]
+     ```
+
+     Cómo warnings y sugerencias nos retorna (acorté poniendo los warnings que nos interesan, de NTP y SSH):
+     ```sh
+     Warnings (4):
+       ----------------------------
+       ! Found one or more vulnerable packages. [PKGS-7392]
+           https://cisofy.com/lynis/controls/PKGS-7392/
+     
+       ! Nameserver 10.10.102.27 does not respond [NETW-2704]
+           https://cisofy.com/lynis/controls/NETW-2704/
+     
+       ! Nameserver 10.8.12.48 does not respond [NETW-2704]
+           https://cisofy.com/lynis/controls/NETW-2704/
+     
+       ! iptables module(s) loaded, but no rules active [FIRE-4512]
+           https://cisofy.com/lynis/controls/FIRE-4512/
+     
+       Suggestions (56):
+       ----------------------------
+       * Consider hardening SSH configuration [SSH-7408]
+         - Details  : AllowTcpForwarding (set YES to NO)
+           https://cisofy.com/lynis/controls/SSH-7408/
+     
+       * Consider hardening SSH configuration [SSH-7408]
+         - Details  : ClientAliveCountMax (set 3 to 2)
+           https://cisofy.com/lynis/controls/SSH-7408/
+     
+       * Consider hardening SSH configuration [SSH-7408]
+         - Details  : Compression (set YES to NO)
+           https://cisofy.com/lynis/controls/SSH-7408/
+     
+       * Consider hardening SSH configuration [SSH-7408]
+         - Details  : LogLevel (set INFO to VERBOSE)
+           https://cisofy.com/lynis/controls/SSH-7408/
+     
+       * Consider hardening SSH configuration [SSH-7408]
+         - Details  : MaxAuthTries (set 6 to 3)
+           https://cisofy.com/lynis/controls/SSH-7408/
+     
+       * Consider hardening SSH configuration [SSH-7408]
+         - Details  : MaxSessions (set 10 to 2)
+           https://cisofy.com/lynis/controls/SSH-7408/
+     
+       * Consider hardening SSH configuration [SSH-7408]
+         - Details  : Port (set 22 to )
+           https://cisofy.com/lynis/controls/SSH-7408/
+     
+       * Consider hardening SSH configuration [SSH-7408]
+         - Details  : TCPKeepAlive (set YES to NO)
+           https://cisofy.com/lynis/controls/SSH-7408/
+     
+       * Consider hardening SSH configuration [SSH-7408]
+         - Details  : X11Forwarding (set YES to NO)
+           https://cisofy.com/lynis/controls/SSH-7408/
+     
+       * Consider hardening SSH configuration [SSH-7408]
+         - Details  : AllowAgentForwarding (set YES to NO)
+           https://cisofy.com/lynis/controls/SSH-7408/
+     
+       * Enable logging to an external logging host for archiving purposes and additional protection [LOGG-2154]
+           https://cisofy.com/lynis/controls/LOGG-2154/
+     
+       * Check ntpq peers output for time source candidates [TIME-3128]
+           https://cisofy.com/lynis/controls/TIME-3128/
+     ```
+   
+   - **Consider hardening SSH configuration [SSH-7408]**
+     - **https://cisofy.com/lynis/controls/SSH-7408/**
+       - **Details  : AllowTcpForwarding (set YES to NO)**
+       - **Details  : ClientAliveCountMax (set 3 to 2)**
+       - **Details  : Compression (set YES to NO)**
+       - **Details  : LogLevel (set INFO to VERBOSE)**
+       - **Details  : MaxAuthTries (set 6 to 3)**
+       - **Details  : MaxSessions (set 10 to 2)**
+       - **Details  : Port (set 22 to )**
+       - **Details  : TCPKeepAlive (set YES to NO)**
+       - **Details  : AllowAgentForwarding (set YES to NO)**
+   - **Enable logging to an external logging host for archiving purposes and additional protection [LOGG-2154]**
+     - **https://cisofy.com/lynis/controls/LOGG-2154/**
+   - **Check ntpq peers output for time source candidates [TIME-3128]**
+     - **https://cisofy.com/lynis/controls/TIME-3128/**
+   
+   ​    
+   
 8. **EN LA PRÁCTICA 2 se obtuvo un perfil de los principales sistemas que conviven en su red, puertos accesibles, fingerprinting, paquetería de red, etc. Seleccione un subconjunto de máquinas del laboratorio de prácticas y la propia red. Elabore el correspondiente informe de análisis de vulnerabilidades. Puede utilizar como apoyo al análisis la herramienta Nessus Essentials (disponible para educación en https://www.tenable.com/tenable-for-education/nessus-essentials bajo registro para obtener un código de activación) para su instalación en la máquina debian de prácticas. Como opción alternativa, también podría instalar Greenbone Vulnerability Management (GVM). Como referencia-plantilla puede utilizar.:**
 
      - **Writing a Penetration Testing Report del SANS (SysAdmmin Audit, Networking and Security) Institute. Muestra las etapas o fases del desarrollo de un “report”, describe el formato del “report” y finaliza con un ejemplo. http://www.sans.org/reading-room/whitepapers/bestprac/writing-penetration-testing-report-33343?show=writing-penetration-testing-report-33343&cat=bestprac**
