@@ -21,7 +21,7 @@
        Creamos un fichero y con ```scp``` lo pasamos a otra máquina, y con opción -c escogemos el tipo de cifrado.
 
        ```sh
-       scp -c <tipoDeCifrado> fichero.txt lsi@10.11.50.143
+       scp -v -c <tipoDeCifrado> fichero.txt lsi@10.11.50.143
        ```
 
        - **Tipos de cifrado**
