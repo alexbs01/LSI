@@ -98,13 +98,13 @@
        EN LA ENTIDAD CERTIFICADORA
 
        Actualizamos los repositorios e instalamos openssl
-       
+
        ```sh
        apt update -y && apt install -y openssl easy-rsa
        ```
 
        Vamos a /home/lsi y creamos una carpeta para tener todo lo de easy-rsa
-       
+
        ```sh
        cd /home/lsi/
        make-cadir easyrsa
@@ -112,7 +112,7 @@
        ```
 
        Creamos un PKI y la Entidad Certificadora, cuando pregunte el FQDN ponemos la IP de la Entidad Certificadora
-       
+
        ```sh
        ./easyrsa init-pki
        ./easyrsa build-ca nopass
@@ -121,56 +121,83 @@
        EN EL SERVIDOR WEB
 
        Vamos a la carpeta de configuración de apache y creamos la carpeta de easy-rsa
-       
+
        ```sh
        cd /etc/apache2
        make-cadir easyrsa
        cd easyrsa
        ```
-       
+
        Luego creamos un PKI y generamos una petición de firma a la Entidad Certificadora, poniendo el nombre de la entidad. Y copiamos la petición generada en  la carpeta /tmp de la entidad
-       
+
        ```sh
        ./easyrsa init-pki
        ./easyrsa gen-req 10.11.50.143
+       ```
+
+       Cuando nos pregunte el Common Name, ponemos **bisbi**
+
+       ```
+       Common Name (eg: your user, host, or server name) [10.11.50.143]:bisbi
+       * Notice:
+       
+       Keypair and certificate request completed. Your files are:
+       req: /etc/apache2/easyrsa/pki/reqs/10.11.50.143.req
+       key: /etc/apache2/easyrsa/pki/private/10.11.50.143.key
+       
        scp pki/reqs/10.11.50.143.req lsi@10.11.50.143:/tmp
        ```
+
        
+
        EN LA ENTIDAD CERTIFICADORA
-       
+
        Importamos la petición, la firmamos y la llevamos la carpeta /tmp del servidor web
-       
+
        ```sh
        ./easyrsa import-req /tmp/10.11.50.143.req 10.11.50.143
        ./easyrsa sign-req server 10.11.50.143
        scp pki/issued/10.11.50.143.crt lsi@10.11.50.142:/tmp
+       scp pki/ca.crt lsi@10.11.50.142:/tmp
        ```
-       
+
+       Luego copiamos el certificado de la entidad en la siguiente carpeta y actualizamos los certificados del equipo
+
+       ```sh
+       cp pki/ca.crt /usr/local/share/ca-certificates/
+       update-ca-certificates
+       ```
+
        EN EL SERVIDOR WEB
-       
-       Copiamos el certificado firmado en pki/private
-       
+
+       Copiamos el certificado firmado en pki/private y también a la carpeta donde se almacenan los certificados
+
        ```sh
        cp /tmp/10.11.50.143.crt pki/private/
+       mkdir pki/CA
+       cp /tmp/ca.crt pki/CA/CA.crt
+       cp /tmp/ca.crt /usr/local/share/ca-certificates/
+       update-ca-certificates
        ```
-       
+
        Después, habilitamos el módulo de ssl, editamos el archivo sites-available/default-ssl.conf y cambiamos las siguientes líneas
-       
+
        ```sh
        a2enmod ssl
        nano sites-available/default-ssl.conf
        
        SSLCertificateFile      /etc/apache2/easyrsa/pki/private/10.11.50.143.crt
        SSLCertificateKeyFile   /etc/apache2/easyrsa/pki/private/10.11.50.143.key
+       SSLCACertificateFile    /etc/apache2/easyrsa/pki/CA/CA.crt
        ```
-       
+
        Y reiniciamos el servidor apache poniendo la contraseña que pusimos durante la creación de las claves del servidor
-       
+
        ```sh
        root@debian:/etc/apache2# systemctl restart apache2
        🔐 Enter passphrase for SSL/TLS keys for 127.0.0.1:443 (RSA): ****
        ```
-       
+
        
 
      - **Cree su propio certificado para ser firmado por la Autoridad Certificadora. Bueno, y fírmelo.**
@@ -210,7 +237,25 @@
        systemctl reload apache2
        ```
 
+       Para que la carpeta requiera de usuario y contraseña para poder acceder a ella, deberemos cambiar la configuración del puerto 443, ```nano /etc/apache2/sites-available/default-ssl.conf```, y añadimos lo siguiente
        
+       ```sh
+       <Directory "/var/www/html/privada">
+       	AuthType Basic
+       	AuthName "Area restringida"
+       	AuthBasicProvider file
+       	AuthUserFile /var/www/html/privada/.htpasswd
+       	Require valid-user
+       </Directory>
+       ```
+       
+       El archivo .htpasswd es el que contendrá una asociación de usuario:contraseña, de los usuarios que podrán acceder a la carpeta
+       
+       ```sh
+       htpasswd -c /var/www/html/privada/.htpasswd lsi
+       ```
+       
+       Luego reiniciamos el servidor apache y entramos a la carpeta con W3M
 
 3. **Tomando como base de trabajo el openVPN deberá configurar una VPN entre dos equipos virtuales del laboratorio que garanticen la confidencialidad entre sus comunicaciones.**[Crear una VPN, uno hace servidor y cuando el cliente se conecte le asigna una IP de un rango establecido, la conexión debe ir cifrada, clave compartida(pre-shared key). En el cliente se conecta y ambas máquinas hacen ifconfig y luego se hace ping de ambas máquinas]
 
@@ -347,7 +392,7 @@
        * Check ntpq peers output for time source candidates [TIME-3128]
            https://cisofy.com/lynis/controls/TIME-3128/
      ```
-   
+
    - **Consider hardening SSH configuration [SSH-7408]**
      - **https://cisofy.com/lynis/controls/SSH-7408/**
        - **Details  : AllowTcpForwarding (set YES to NO)**
@@ -397,9 +442,9 @@
      - **https://cisofy.com/lynis/controls/TIME-3128/**
      
        Lynis comprueba si los servidores de NTP están en la descripción general por pares. Las diferencias entre la configuración activa y la almacenada en el disco pueden provocar que la configuración NTP no funcione después de un reinicio.
-   
+
    ​    
-   
+
 8. **EN LA PRÁCTICA 2 se obtuvo un perfil de los principales sistemas que conviven en su red, puertos accesibles, fingerprinting, paquetería de red, etc. Seleccione un subconjunto de máquinas del laboratorio de prácticas y la propia red. Elabore el correspondiente informe de análisis de vulnerabilidades. Puede utilizar como apoyo al análisis la herramienta Nessus Essentials (disponible para educación en https://www.tenable.com/tenable-for-education/nessus-essentials bajo registro para obtener un código de activación) para su instalación en la máquina debian de prácticas. Como opción alternativa, también podría instalar Greenbone Vulnerability Management (GVM). Como referencia-plantilla puede utilizar.:**
 
      - **Writing a Penetration Testing Report del SANS (SysAdmmin Audit, Networking and Security) Institute. Muestra las etapas o fases del desarrollo de un “report”, describe el formato del “report” y finaliza con un ejemplo. http://www.sans.org/reading-room/whitepapers/bestprac/writing-penetration-testing-report-33343?show=writing-penetration-testing-report-33343&cat=bestprac**
